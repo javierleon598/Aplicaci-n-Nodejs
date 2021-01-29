@@ -1,4 +1,5 @@
 const express = require("express"),
+    database = require('./database'),
     path = require('path'),
     exphbs = require('express-handlebars'),
     methodOverride = require('method-override'),
