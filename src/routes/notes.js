@@ -1,0 +1,7 @@
+const router = require('express').Router();
+
+// router.get('/', (req, res) => {
+//     res.send('Notes');
+// });
+
+module.exports = router;
