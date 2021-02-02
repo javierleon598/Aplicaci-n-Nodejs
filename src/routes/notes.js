@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const Note = require('../models/Note');
 
-router.get('/notes', (req, res) => {
-    res.send('Notes from database');
+router.get('/notes', async (req, res) => {
+    const notes = await Note.find({}).sort({date: 'desc'}).lean();
+    res.render('notes/all-notes', { notes });
 });
 
 router.get('/notes/add', (req, res) => {
