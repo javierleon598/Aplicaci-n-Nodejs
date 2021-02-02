@@ -30,6 +30,19 @@ router.post('/notes/new-note', async (req, res) => {
         await newNote.save();
         res.redirect('/notes');
     }
-})
+});
+
+router.get('/notes/edit/:id', async (req, res) => {
+    console.log(req.params);
+    const note = await Note.findById(req.params.id).lean();
+    console.log(note);
+    res.render('notes/edit-note', { note });
+});
+
+router.put('/notes/edit-note/:id', async (req, res) => {
+    const { title, description } = req.body;
+    await Note.findByIdAndUpdate(req.params.id, { title, description}).lean();
+    res.redirect('/notes');
+});
 
 module.exports = router;
