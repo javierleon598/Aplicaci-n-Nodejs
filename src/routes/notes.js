@@ -3,7 +3,7 @@ const Note = require('../models/Note');
 const { isAuthenticated } = require('../helpers/auth');
 
 router.get('/notes', isAuthenticated, async (req, res) => {
-    const notes = await Note.find({}).sort({date: 'desc'}).lean();
+    const notes = await Note.find({user: req.user._id}).sort({date: 'desc'}).lean();
     res.render('notes/all-notes', { notes });
 });
 
@@ -28,6 +28,8 @@ router.post('/notes/new-note', isAuthenticated, async (req, res) => {
         })
     } else {
         const newNote = new Note({ title, description });
+        newNote.user = req.user._id;
+        console.log(newNote);
         await newNote.save();
         req.flash('success_msg', 'Notes Added Successfully');
         res.redirect('/notes');
