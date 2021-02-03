@@ -1,13 +1,15 @@
 const express = require("express"),
-    database = require('./database'),
     path = require('path'),
     exphbs = require('express-handlebars'),
     methodOverride = require('method-override'),
     session = require('express-session'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    passport = require('passport');
 
 // Initializations
-const app = express();
+const app = express(),
+  database = require('./database'),
+  consigPassport = require('./config/passport');
 
 // Settings
 app.set("port", process.env.PORT || 3000);
@@ -28,12 +30,15 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 
 // Global Varibles
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
 
   next();
 })
