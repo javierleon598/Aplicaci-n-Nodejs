@@ -34,6 +34,7 @@ router.post('/users/signup', async (req, res) => {
             res.redirect('/users/signup');
         }else{
             const newUser = new User({name, email, password});
+            newUser.password = await newUser.encryptPassword(password);
             console.log(newUser);
             await newUser.save();
             req.flash('success_msg', 'You are registered');
